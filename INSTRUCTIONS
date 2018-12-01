@@ -1,0 +1,45 @@
+
+== Purpose ==
+
+Implement a (backdoored) password generator in the following steps:
+	
+	Step 1: Add an ecall to generate_password() in the password_generator.edl file
+	Step 2: Write the necessary code in main() to create, call and finally destroy the enclave
+	Step 3: Modify the *.edl file so that it is up to the programmer to perform the necessary security checks. Also include those checks in the body of the generate_password() function
+	Step 4: Write an ocall to leak every 64-bit random number when it is generated
+	Step 5: Write another ocall to leak the generated password
+	Step 6: Check how a sealing key can be requested and seal the generated password before it is returned to unprotected memory.
+
+== Cleaning ==
+
+To clear all objects files:
+
+	> make clean
+
+To also clear the private/public key pair, execute:
+	
+	> make scrub
+
+== Building ==
+
+If there is no public/private key pair, execute:
+	
+	> make configure
+
+To build the enclave and enclave:
+	
+	> make
+
+== Running ==
+
+Simply execute:
+	
+	> ./inc
+
+== Debugging ==
+
+In case of problems, don't forget to check the kernel logs for output from the SGX driver:
+
+	> tail -f /var/log/syslog
+
+
