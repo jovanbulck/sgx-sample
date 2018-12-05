@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <SGX/sgx_urts.h>
+#include <sgx_urts.h>
 #include "Enclave/password_generator_u.h"
 
 #define DEBUG_ENCLAVE		1
 #define PASSWD_LEN		100
-#define ENCLAVE_FILE("Enclave/password_generator.so")
+#define ENCLAVE_FILE		"Enclave/password_generator.so"
 
 int main( int argc, char **argv )
 {
@@ -19,7 +19,7 @@ int main( int argc, char **argv )
   sgx_status = sgx_create_enclave(ENCLAVE_FILE, DEBUG_ENCLAVE, &launch_token, &updated, &enclaveId, NULL);
   if(sgx_status != SGX_SUCCESS) return -1;
 
-  sgx_status = ecall_generate_password(enclaveId,&output,pw,PASSWD_LEN);
+  sgx_status = generate_password(enclaveId,&output,pw,PASSWD_LEN);
   if(sgx_status != SGX_SUCCESS) printf( "Error calling enclave\n (error 0x%x)\n", sgx_status );
 	else printf("Enclave called successfully (%i)\n",output);
 

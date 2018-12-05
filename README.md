@@ -2,7 +2,8 @@
 When I try and compile this on the lab's machines, I first set the following variables:
 ```
 source /localhost/packages/linux-sgx/sgxsdk/environment
-export SGX_INCLUDE="/localhost/packages/linux-sgx/sgxsdk/include/ /localhost/packages/linux-sgx/sgxsdk/include/tlibc/"
+export SGX_INCLUDE="/localhost/packages/linux-sgx/sgxsdk/include/"
+export SGX_INCLUDE_TLIBC="/localhost/packages/linux-sgx/sgxsdk/include/tlibc/"
 export SGX_LIBS="/localhost/packages/linux-sgx/sgxsdk/lib64/"
 ```
 (where /localhost/packages/linux-sgx/sgxsdk is the path to the SGX SDK)

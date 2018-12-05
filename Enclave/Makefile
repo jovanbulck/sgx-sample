@@ -3,7 +3,7 @@ AR		  = ar
 LD		  = gcc
 EDGER		  = sgx_edger8r
 SIGNER		  = sgx_sign
-INCLUDE		  = $(patsubst %,-I%,$(subst :, ,$(SGX_INCLUDE)))
+INCLUDE		  = $(patsubst %,-I%,$(subst :, ,$(SGX_INCLUDE))) $(patsubst %,-I%,$(subst :, ,$(SGX_INCLUDE_TLIBC)))
 T_CFLAGS	  = $(CFLAGS) -nostdinc -fvisibility=hidden -fpie -fstack-protector -g
 U_CFLAGS	  = $(CFLAGS) -nostdinc -fvisibility=hidden -fpie -fstack-protector -g
 AR_FLAGS	  = rcs
@@ -22,7 +22,7 @@ ENCLAVE_CONFIG    = $(ENCLAVE).config.xml
 OUTPUT_T          = $(ENCLAVE).so
 OUTPUT_T_UNSIG    = $(ENCLAVE).unsigned.so
 OUTPUT_U          = lib$(ENCLAVE)_proxy.a
-LIB_DIRS          = -L $(SGX_LIBS)
+LIB_DIRS          = -L$(SGX_LIBS)
 LD_FLAGS	  = -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles \
                     -Wl,--whole-archive -Wl,--start-group $(ENCLAVE_LIBS) -Wl,--end-group \
                     -Wl,--no-whole-archive -Wl,--start-group $(ENCLAVE_LIB_PARTS) -Wl,--end-group \
@@ -39,7 +39,7 @@ all: $(OUTPUT_T) $(OUTPUT_U)
 
 $(OUTPUT_T) : $(TRUSTED_OBJECTS) $(OBJECTS)
 	echo "$(INDENT)[LD]  " $(OBJECTS) $(TRUSTED_OBJECTS) $(ENCLAVE_LIBS) $(ENCLAVE_LIBS_PARTS) $(OUTPUT_T_UNSIG)
-	$(LD) $(LD_FLAGS) $(LIB_DIRS) $(OBJECTS) $(TRUSTED_OBJECTS) -o $(OUTPUT_T_UNSIG)
+	$(LD) $(LIB_DIRS) $(OBJECTS) $(TRUSTED_OBJECTS) $(LD_FLAGS) -o $(OUTPUT_T_UNSIG)
 	
 	echo "$(INDENT)[SGN]" $(OUTPUT_T_UNSIG)
 	$(SIGNER) sign -key $(PRIVATE_KEY) -enclave $(OUTPUT_T_UNSIG) -out $(OUTPUT_T) -config $(ENCLAVE_CONFIG) > /dev/null 2> /dev/null
